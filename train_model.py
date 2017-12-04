@@ -13,7 +13,7 @@ from keras.layers import Input, Dense, Lambda, Dropout, Activation, LSTM, \
         TimeDistributed, Convolution1D, MaxPooling1D
 from sklearn.model_selection import train_test_split
 import numpy as np
-import cPickle
+import pickle
 from optparse import OptionParser
 from sys import stderr, argv
 import os
@@ -32,7 +32,7 @@ def train_model(data):
     (x_train, x_val, y_train, y_val) = train_test_split(x, y, test_size=0.3,
             random_state=SEED)
 
-    print 'Building model...'
+    print('Building model...')
 
     n_features = x_train.shape[2]
     input_shape = (None, n_features)
@@ -67,7 +67,7 @@ def train_model(data):
             metrics=['accuracy']
         )
 
-    print 'Training...'
+    print('Training...')
     model.fit(x_train, y_train, batch_size=BATCH_SIZE, nb_epoch=EPOCH_COUNT,
               validation_data=(x_val, y_val), verbose=1)
 
@@ -90,8 +90,8 @@ if __name__ == '__main__':
             metavar='WEIGHTS_PATH')
     options, args = parser.parse_args()
 
-    with open(options.data_path, 'r') as f:
-        data = cPickle.load(f)
+    with open(options.data_path, 'rb') as f:
+        data = pickle.load(f)
 
     model = train_model(data)
 
